@@ -1,0 +1,80 @@
+import MusicMatch, ToneAnalysis
+
+def topTenTone():
+
+    tracknameandid = MusicMatch.gettoptenResponse()
+
+    lyricList = MusicMatch.getLyrics(tracknameandid)
+
+    for x in lyricList:
+        lyricList[x] = str(ToneAnalysis.CheckTone(lyricList[x]))
+        print('The tone of ' + x + ' is ' + lyricList[x])
+
+def artistAlbumTone():
+
+    # gets the top ten artists and prints them out for the user to see
+    artistandid = MusicMatch.gettopArtist()
+
+    for x in artistandid:
+        print(x)
+
+    # allows the user to choose which artist they would like to analyze tone of
+    print('Which of these artists would you like to analyze the tone of? (input name as displayed. It is case sensitive.)')
+
+    artistChoice = str(input())
+
+    print('\n')
+
+    # inputs artist choice into music match to get a list of albums for the artist and prints them out
+    albumNameandId = MusicMatch.getArtistAlbum(str(artistandid[artistChoice]))
+
+    for z in albumNameandId:
+        print(z)
+
+    print('\n')
+
+    # allows user to choose which album they would like to see the tone of
+
+    print('Which album would you like to analyze the tone of?(input name as displayed. It is case sensitive.)')
+
+    albumChoice = input()
+
+    print('\n')
+
+    # requests the tracks of the chosen album
+    albumTracks = MusicMatch.getAlbumTracks(str(albumNameandId[albumChoice]))
+
+    # uses the track list to get lyrics for all of the tracks
+    lyricList = MusicMatch.getLyrics(albumTracks)
+
+    # feeds the lyrics of each track to the tone analysis api and prints the results
+    for x in lyricList:
+        lyricList[x] = str(ToneAnalysis.CheckTone(lyricList[x]))
+        print('The tone of ' + x + ' is ' + lyricList[x])
+
+
+
+playAgain = 'yes'
+while playAgain == 'yes' or playAgain == 'y':
+    print('Would you like to see the tone of top ten (t)racks or tones from top ten (a)rtists?')
+
+    answer = input()
+
+    answer.lower()
+
+
+    if answer == 't':
+        topTenTone()
+
+    if answer == 'a':
+        print('The top ten artists are: ')
+        print('\n')
+        artistAlbumTone()
+
+    print('\n')
+    print('Would you look to search another selection?')
+    playAgain = input()
+    playAgain.lower()
+
+print('\n')
+print('Goodbye. Thanks for using our program.')
